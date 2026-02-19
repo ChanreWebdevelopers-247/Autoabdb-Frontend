@@ -11,10 +11,13 @@ import NetworkGraph from './NetworkGraph';
 import PublicHeader from '@/components/public/PublicHeader';
 import { cn } from '@/utils/cn';
 
+const getAntibodyDisplayName = (item) =>
+  (item.name || item.raw?.Autoantibody || item.raw?.Biomarker || item.raw?.Antibody || item.raw?.Name || 'Unknown').trim() || 'Unknown';
+
 const dedupeByAntibody = (results) => {
   const seen = new Map();
   for (const item of results) {
-    const name = item.name?.trim() || 'Unknown';
+    const name = getAntibodyDisplayName(item);
     if (!seen.has(name)) seen.set(name, item);
   }
   return Array.from(seen.values());
@@ -84,8 +87,9 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
       try {
         const res = await axiosInstance.get(`/biomarkers?search=${encodeURIComponent(autoOpenAntibody.trim())}`);
         const data = res.data || [];
+        const target = autoOpenAntibody.trim().toLowerCase();
         const relevantData = data.filter(
-          (item) => (item.name || '').trim().toLowerCase() === autoOpenAntibody.trim().toLowerCase()
+          (item) => ((item.name || item.raw?.Autoantibody || item.raw?.Biomarker || item.raw?.Antibody || item.raw?.Name || '').trim().toLowerCase() === target)
         );
         setGraphData(relevantData.length > 0 ? relevantData : data);
         setViewMode('graph');
@@ -122,18 +126,19 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
   }, [debouncedQuery, useExcelResults]);
 
   const handleSelect = async (biomarker) => {
-    setSelectedAntibody(biomarker.name);
+    const abName = getAntibodyDisplayName(biomarker);
+    setSelectedAntibody(abName || biomarker.name);
     setShowDropdown(false);
     setQuery('');
     setHighlightIndex(-1);
 
     setIsGraphLoading(true);
     try {
-      const res = await axiosInstance.get(`/biomarkers?search=${encodeURIComponent(biomarker.name)}`);
-      const data = res.data;
-      const relevantData = data.filter(
-        (item) => (item.name || '').trim() === (biomarker.name || '').trim()
-      );
+      const searchTerm = abName || biomarker.name;
+      const res = await axiosInstance.get(`/biomarkers?search=${encodeURIComponent(searchTerm)}`);
+      const data = res.data || [];
+      const target = (abName || biomarker.name || '').trim().toLowerCase();
+      const relevantData = data.filter((item) => getAntibodyDisplayName(item).toLowerCase() === target);
       setGraphData(relevantData.length > 0 ? relevantData : data);
       setViewMode('graph');
       onViewModeChange?.('graph');
@@ -340,16 +345,16 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
                   )}
                 >
                   <div className="min-w-0 flex-1">
-                    <h4 className="font-semibold text-sm sm:text-base text-white truncate">{item.name}</h4>
-                    {item.manifestation && (
+                    <h4 className="font-semibold text-sm sm:text-base text-white truncate">{getAntibodyDisplayName(item)}</h4>
+                    {(item.manifestation || item.raw?.['Clinical Manifestation']) && (
                       <p className="text-xs sm:text-sm text-gray-400 truncate mt-0.5">
-                        {item.manifestation}
+                        {item.manifestation || item.raw?.['Clinical Manifestation']}
                       </p>
                     )}
                   </div>
-                  {item.raw?.Disease && (
+                  {(item.raw?.Disease || item.raw?.disease) && (
                     <span className="shrink-0 text-[10px] sm:text-xs font-medium px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-blue-500/30 text-blue-200 max-w-[100px] sm:max-w-none truncate">
-                      {item.raw.Disease}
+                      {item.raw.Disease || item.raw.disease}
                     </span>
                   )}
                   <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-500 shrink-0" />

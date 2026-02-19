@@ -36,10 +36,21 @@ export default function NetworkGraph({ antibodyName, data, onBack }) {
 
   const diseaseGroups = useMemo(() => {
     const groups = {};
+    const getDisease = (raw) =>
+      raw.Disease || raw.disease || raw.DiseaseName || raw.Condition ||
+      Object.entries(raw).find(([k]) => /disease|condition/i.test(k))?.[1] || 'Unknown';
+    const getAssoc = (raw) =>
+      raw['Disease Association (% percentage)'] ?? raw['Disease Association'] ?? raw['Disease Association %'] ??
+      Object.entries(raw).find(([k]) => /disease.?assoc|association/i.test(k))?.[1];
+    const getManifestation = (item, raw) =>
+      item.manifestation || raw['Clinical Manifestation'] || raw['Clinical manifestation'] ||
+      raw['Disease related clinical manifestation'] || raw.Manifestation ||
+      Object.entries(raw).find(([k]) => /manifestation|clinical/i.test(k) && !/disease/i.test(k))?.[1];
+
     data.forEach((item) => {
       const raw = item.raw ?? {};
-      const disease = raw.Disease || raw.disease || 'Unknown';
-      const assocRaw = raw['Disease Association (% percentage)'] ?? raw['Disease Association'];
+      const disease = getDisease(raw);
+      const assocRaw = getAssoc(raw);
       const assoc = parsePercent(assocRaw) ?? 5;
 
       if (!groups[disease]) {
@@ -47,10 +58,7 @@ export default function NetworkGraph({ antibodyName, data, onBack }) {
       }
       groups[disease].association = Math.max(groups[disease].association, assoc);
 
-      const maniName =
-        item.manifestation ||
-        raw['Clinical Manifestation'] ||
-        raw['Disease related clinical manifestation'];
+      const maniName = getManifestation(item, raw);
       if (maniName) {
         let prevRaw =
           raw['Prevelanse (% percentage)'] ?? raw.Prevelanse ?? raw.Prevalence ?? item.prevalence;
