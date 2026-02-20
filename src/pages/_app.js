@@ -10,7 +10,7 @@ import favicon from '../assets/favicon.png';
 function MyApp({ Component, pageProps }) {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"><div className="animate-spin h-10 w-10 border-2 border-white/30 border-t-white rounded-full" /></div>} persistor={persistor}>
         <Head>
           <link rel="icon" type="image/png" sizes="32x32" href={favicon.src || favicon} />
           <link rel="icon" type="image/png" sizes="16x16" href={favicon.src || favicon} />
