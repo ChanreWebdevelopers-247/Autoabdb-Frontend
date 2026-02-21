@@ -162,15 +162,15 @@ export default function NetworkGraph({ antibodyName, data, onBack }) {
   }, [selectedDisease, diseaseGroups, diseaseNodes]);
 
   return (
-    <div className="relative w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="relative w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#51d0de]/30 via-[#d9d9d9] to-[#bf4aa8]/30">
       <motion.button
         onClick={() => (selectedDisease ? setSelectedDisease(null) : onBack?.())}
-        className="fixed top-16 sm:top-20 md:top-24 left-3 sm:left-6 md:left-8 z-50 flex items-center gap-1.5 sm:gap-2 px-3 py-2.5 sm:px-4 sm:py-2.5 md:px-5 min-h-[44px] bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl shadow-xl hover:bg-white/20 active:bg-white/20 transition-all group text-white touch-manipulation"
+        className="fixed top-16 sm:top-20 md:top-24 left-3 sm:left-6 md:left-8 z-50 flex items-center gap-1.5 sm:gap-2 px-3 py-2.5 sm:px-4 sm:py-2.5 md:px-5 min-h-[44px] bg-[#d9d9d9]/60 backdrop-blur-xl border border-slate-200/60 rounded-xl sm:rounded-2xl shadow-xl hover:bg-[#d9d9d9]/80 active:bg-[#d9d9d9]/80 transition-all group text-slate-900 touch-manipulation"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
       >
-        <span className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-blue-500/30 flex items-center justify-center text-blue-300 text-xs sm:text-sm group-hover:scale-110 transition-transform shrink-0">←</span>
-        <span className="text-sm sm:text-base font-bold whitespace-nowrap">{selectedDisease ? 'Back to Overview' : 'Back to Results'}</span>
+        <span className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-[#51d0de]/50 flex items-center justify-center text-slate-800 text-xs sm:text-sm group-hover:scale-110 transition-transform shrink-0">←</span>
+        <span className="text-sm sm:text-base font-bold whitespace-nowrap text-slate-900">{selectedDisease ? 'Back to Overview' : 'Back to Results'}</span>
       </motion.button>
 
       <div

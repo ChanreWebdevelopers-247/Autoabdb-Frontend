@@ -224,7 +224,7 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
 
   if (viewMode === 'graph') {
     return (
-      <div className="fixed inset-0 w-full h-screen flex flex-col z-[100] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+      <div className="fixed inset-0 w-full h-screen flex flex-col z-[100] bg-gradient-to-br from-[#51d0de]/30 via-[#d9d9d9] to-[#bf4aa8]/30 overflow-hidden">
         <div className="shrink-0">
           <PublicHeader />
         </div>
@@ -232,7 +232,7 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
           {isGraphLoading ? (
             <div className="flex flex-col items-center gap-4">
               <Loader2 className="h-12 w-12 animate-spin text-blue-400" />
-              <p className="text-sm text-gray-300">Loading graph...</p>
+              <p className="text-sm text-slate-600">Loading graph...</p>
             </div>
           ) : (
             <NetworkGraph
@@ -249,10 +249,10 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
   return (
     <div className="w-full relative" ref={searchRef}>
       <div className="relative">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-2xl blur-sm opacity-60 group-hover:opacity-100 transition" />
-        <div className="relative bg-white/10 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/80 transition-all focus-within:ring-2 focus-within:ring-blue-500/50 focus-within:border-blue-500/50">
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-[#51d0de]/40 to-[#bf4aa8]/40 rounded-2xl blur-sm opacity-60 group-hover:opacity-100 transition" />
+        <div className="relative bg-[#d9d9d9]/50 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-200/60 transition-all focus-within:ring-2 focus-within:ring-blue-500/50 focus-within:border-blue-500/50">
           <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4">
-            <SearchIcon className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-gray-400 shrink-0" />
+            <SearchIcon className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-slate-500 shrink-0" />
             <input
               ref={inputRef}
               type="text"
@@ -270,13 +270,13 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
                   ? `${displayedResults.length} results`
                   : 'Search autoantibody (e.g. Anti-Ro52)...'
               }
-              className="flex-1 min-w-0 bg-transparent outline-none text-sm sm:text-base md:text-lg text-white placeholder-gray-400"
+              className="flex-1 min-w-0 bg-transparent outline-none text-sm sm:text-base md:text-lg text-slate-900 placeholder-slate-500"
             />
             {isLoading && <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin text-blue-400 shrink-0" />}
             {(query || useExcelResults) && !isLoading && (
               <button
                 onClick={useExcelResults ? clearExcel : () => setQuery('')}
-                className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                className="p-1.5 sm:p-2 rounded-lg hover:bg-[#d9d9d9]/60 text-slate-500 hover:text-slate-900 transition-colors"
               >
                 <X className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
@@ -294,7 +294,7 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
                 'p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl flex items-center justify-center transition-all',
                 useExcelResults
                   ? 'bg-blue-500 text-white shadow-lg'
-                  : 'bg-white/10 text-gray-300 hover:bg-blue-500/30 hover:text-white'
+                  : 'bg-[#d9d9d9]/60 text-slate-700 hover:bg-blue-500/40 hover:text-white'
               )}
               title="Upload Excel for bulk search"
             >
@@ -315,16 +315,16 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="absolute left-0 right-0 mt-2 bg-slate-900/95 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl border border-white/20 overflow-hidden z-50 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto"
+            className="absolute left-0 right-0 mt-2 bg-[#d9d9d9]/95 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl border border-slate-200/60 overflow-hidden z-50 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto"
           >
             {useExcelResults && (
-              <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-blue-500/20 border-b border-blue-500/30 flex justify-between items-center gap-2">
-                <span className="text-xs font-semibold text-blue-300 uppercase tracking-wider truncate min-w-0">
+              <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-[#51d0de]/30 border-b border-[#51d0de]/40 flex justify-between items-center gap-2">
+                <span className="text-xs font-semibold text-slate-800 uppercase tracking-wider truncate min-w-0">
                   {displayedResults.length} autoantibodies
                 </span>
                 <button
                   onClick={clearExcel}
-                  className="text-xs font-medium text-blue-400 hover:underline"
+                  className="text-xs font-medium text-blue-600 hover:underline"
                 >
                   Clear
                 </button>
@@ -340,24 +340,24 @@ export default function BiomarkerSearch({ onViewModeChange, initialQuery = '', a
                   className={cn(
                     'w-full px-3 sm:px-4 py-2.5 sm:py-3.5 flex items-center justify-between gap-2 sm:gap-4 text-left transition-colors',
                     highlightIndex === i
-                      ? 'bg-blue-500/30'
-                      : 'hover:bg-white/10 active:bg-white/10'
+                      ? 'bg-[#51d0de]/40'
+                      : 'hover:bg-[#d9d9d9]/60 active:bg-[#d9d9d9]/60'
                   )}
                 >
                   <div className="min-w-0 flex-1">
-                    <h4 className="font-semibold text-sm sm:text-base text-white truncate">{getAntibodyDisplayName(item)}</h4>
+                    <h4 className="font-semibold text-sm sm:text-base text-slate-900 truncate">{getAntibodyDisplayName(item)}</h4>
                     {(item.manifestation || item.raw?.['Clinical Manifestation']) && (
-                      <p className="text-xs sm:text-sm text-gray-400 truncate mt-0.5">
+                      <p className="text-xs sm:text-sm text-slate-600 truncate mt-0.5">
                         {item.manifestation || item.raw?.['Clinical Manifestation']}
                       </p>
                     )}
                   </div>
                   {(item.raw?.Disease || item.raw?.disease) && (
-                    <span className="shrink-0 text-[10px] sm:text-xs font-medium px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-blue-500/30 text-blue-200 max-w-[100px] sm:max-w-none truncate">
+                    <span className="shrink-0 text-[10px] sm:text-xs font-medium px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-[#51d0de]/40 text-slate-800 max-w-[100px] sm:max-w-none truncate">
                       {item.raw.Disease || item.raw.disease}
                     </span>
                   )}
-                  <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-500 shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-500 shrink-0" />
                 </button>
               ))}
             </div>

@@ -12,6 +12,7 @@ import { searchEntries, getAllEntries } from '@/redux/actions/diseaseActions';
 import logo from '../assets/logo.png';
 import PublicHeader from '@/components/public/PublicHeader';
 import PublicFooter from '@/components/public/PublicFooter';
+import BiomarkerSearch from '@/components/biomarker/BiomarkerSearch';
 
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
@@ -45,6 +46,8 @@ export default function AutoantibodyLanding() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [initParticles, setInitParticles] = useState(false);
+  const [showNetworkGraphOverlay, setShowNetworkGraphOverlay] = useState(false);
+  const [antibodyForGraph, setAntibodyForGraph] = useState('');
 
   // Initialize tsparticles
   useEffect(() => {
@@ -506,9 +509,10 @@ export default function AutoantibodyLanding() {
   };
 
   const handleBiomarkerSelect = (biomarker) => {
-    const name = (biomarker?.name || biomarker || '').trim();
+    const name = (biomarker?.name || biomarker?.raw?.Biomarker || biomarker?.raw?.Autoantibody || biomarker || '').trim();
     if (name) {
-      router.push(`/biomarkers?antibody=${encodeURIComponent(name)}`);
+      setAntibodyForGraph(name);
+      setShowNetworkGraphOverlay(true);
     }
   };
 
@@ -634,7 +638,9 @@ export default function AutoantibodyLanding() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       </Head>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-slate-100 overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-[#51d0de]/30 via-[#d9d9d9] to-[#bf4aa8]/30 overflow-hidden">
+        {!showNetworkGraphOverlay && (
+        <>
         <PublicHeader />
 
         {/* Hero Section - pt-20 for fixed header clearance */}
@@ -890,7 +896,7 @@ export default function AutoantibodyLanding() {
                                   <h4 className="text-slate-900 font-medium mb-3 text-sm">Associations for &quot;{selectedBiomarker}&quot;</h4>
                                   <div className="max-h-44 overflow-y-auto space-y-1.5 mb-3">
                                     {selectedBiomarkerAssociations.map((item, index) => (
-                                      <div key={index} className="bg-white/60 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-slate-700 flex justify-between items-center gap-2 min-h-[44px]">
+                                      <div key={index} className="bg-white/60 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-slate-600 flex justify-between items-center gap-2 min-h-[44px]">
                                         <span className="truncate">{item.disease}</span>
                                         {item.manifestation !== '—' && (
                                           <span className="px-2 py-0.5 bg-emerald-100/80 text-emerald-800 rounded text-xs shrink-0">{item.manifestation}</span>
@@ -958,7 +964,7 @@ export default function AutoantibodyLanding() {
                 <motion.div whileHover={{ scale: 1.08, y: -4 }} whileTap={{ scale: 0.96 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
                   <Link
                     href="/dashboard/disease/disease"
-                    className="group/btn inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white  font-semibold px-8 py-4 rounded-2xl shadow-lg shadow-indigo-300/30 hover:shadow-xl hover:shadow-pink-300/40 transition-all duration-300 border border-slate-200/60"
+                    className="group/btn inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold px-8 py-4 rounded-2xl shadow-lg shadow-indigo-300/30 hover:shadow-xl hover:shadow-pink-300/40 transition-all duration-300 border border-slate-200/60"
                   >
                     <span>Start Exploring</span>
                     <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform duration-200" />
@@ -999,7 +1005,7 @@ export default function AutoantibodyLanding() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-                  <Link href="/auth/register" className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20 hover:-translate-y-0.5 px-6 py-3 sm:px-8 rounded-xl hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg hover:-translate-y-0.5 transition-all inline-block">
+                  <Link href="/auth/register" className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/20 hover:-translate-y-0.5 px-6 py-3 sm:px-8 rounded-xl hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg transition-all inline-block">
                     Get Started(Only for Institutional Use)
                   </Link>
                 </motion.div>
@@ -1045,7 +1051,7 @@ export default function AutoantibodyLanding() {
                           whileHover={{ scale: 1.15, rotate: 8 }}
                           transition={{ type: 'spring', stiffness: 400, damping: 15 }}
                         >
-                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-slate-500" />
                         </motion.div>
                         <h3 className="text-slate-900 font-semibold mb-2 text-sm sm:text-base">{category.title}</h3>
                         <p className="text-slate-500 text-xs sm:text-sm">{category.desc}</p>
@@ -1100,10 +1106,10 @@ export default function AutoantibodyLanding() {
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                     >
-                      <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600" />
+                      <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-slate-500" />
                     </motion.div>
                     <h3 className="text-lg sm:text-xl font-semibold text-slate-900 mb-2 sm:mb-3">{feature.title}</h3>
-                    <p className="text-slate-500 text-sm sm:text-base">{feature.description}</p>
+                    <p className="text-slate-600 text-sm sm:text-base">{feature.description}</p>
                   </motion.div>
                 );
               })}
@@ -1293,7 +1299,7 @@ export default function AutoantibodyLanding() {
 
         <PublicFooter />
 
-        {/* Background Elements */}
+        {/* Background Elements - only shown when overlay is closed */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
           <motion.div
             className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-blue-300/10 rounded-full blur-3xl"
@@ -1335,16 +1341,16 @@ export default function AutoantibodyLanding() {
                   fpsLimit: 120,
                   particles: {
                     color: {
-                      value: ["#4285F4", "#EA4335", "#FBBC05", "#34A853", "#8A2BE2", "#4f46e5"], // Antigravity/Google colors
+                      value: ["#4285F4", "#EA4335", "#FBBC05", "#34A853", "#8A2BE2", "#4f46e5"],
                     },
                     links: {
-                      enable: false, // Turn off lines
+                      enable: false,
                     },
                     move: {
                       direction: "none",
                       enable: true,
                       outModes: {
-                        default: "out", // Let them loop or disappear
+                        default: "out",
                       },
                       random: true,
                       speed: { min: 0.1, max: 1 },
@@ -1355,7 +1361,7 @@ export default function AutoantibodyLanding() {
                         enable: true,
                         area: 800,
                       },
-                      value: 120, // Spread across screen
+                      value: 120,
                     },
                     opacity: {
                       value: { min: 0.1, max: 0.8 },
@@ -1363,7 +1369,7 @@ export default function AutoantibodyLanding() {
                         enable: true,
                         speed: 1,
                         sync: false,
-                      }
+                      },
                     },
                     shape: {
                       type: "circle",
@@ -1374,7 +1380,7 @@ export default function AutoantibodyLanding() {
                         enable: true,
                         speed: 2,
                         sync: false,
-                      }
+                      },
                     },
                   },
                   detectRetina: true,
@@ -1383,6 +1389,25 @@ export default function AutoantibodyLanding() {
             </div>
           )}
         </div>
+        </>
+        )}
+
+        {/* Network Graph Overlay - opens when user selects antibody from Clinical Manifestation section */}
+        {showNetworkGraphOverlay && antibodyForGraph && (
+          <div className="fixed inset-0 z-[9999]">
+            <BiomarkerSearch
+              autoOpenAntibody={antibodyForGraph}
+              backToIndex={false}
+              onViewModeChange={(mode) => {
+                if (mode === 'search') {
+                  setShowNetworkGraphOverlay(false);
+                  setAntibodyForGraph('');
+                  clearBiomarkerSearch();
+                }
+              }}
+            />
+          </div>
+        )}
       </div>
     </>
   );

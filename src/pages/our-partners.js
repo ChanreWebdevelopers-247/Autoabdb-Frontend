@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Handshake, Building2, Flower2 } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -72,41 +73,44 @@ export default function OurPartners() {
         <meta name="twitter:image" content="https://autoabdb.com/logo.png" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="min-h-screen bg-gradient-to-br from-[#51d0de]/30 via-[#d9d9d9] to-[#bf4aa8]/30">
         <PublicHeader />
 
         {/* Hero Section */}
         <div className="relative z-10 px-4 sm:px-6 pt-20 sm:pt-32 pb-16 sm:pb-24">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
-              <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 sm:px-6 mb-6 sm:mb-8">
-                <Handshake className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
-                <span className="text-sm sm:text-base text-gray-200 font-medium">Institutional Partners</span>
-              </div>
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 sm:px-6 mb-6 sm:mb-8 border border-slate-200/60">
+                <Handshake className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                <span className="text-sm sm:text-base text-slate-700 font-medium">Institutional Partners</span>
+              </motion.div>
               
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-6 sm:mb-8 leading-tight">
+              <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="text-4xl sm:text-6xl md:text-7xl font-bold text-slate-900 mb-6 sm:mb-8 leading-tight">
                 Our
                 <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"> Partners</span>
-              </h1>
+              </motion.h1>
               
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-4">
+              <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="text-lg sm:text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed px-4">
                 We are proud to collaborate with leading institutions and organizations dedicated to advancing 
                 autoimmune disease research and improving patient care worldwide.
-              </p>
+              </motion.p>
             </div>
           </div>
         </div>
 
         {/* Partners Section */}
-        <div className="relative z-10 px-4 sm:px-6 py-12 sm:py-20 pb-24">
+        <motion.div className="relative z-10 px-4 sm:px-6 py-12 sm:py-20 pb-24" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <div className="max-w-7xl mx-auto">
-            <div className="space-y-8 sm:space-y-10">
+            <motion.div className="space-y-8 sm:space-y-10" variants={{ initial: {}, animate: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } } }} initial="initial" whileInView="animate" viewport={{ once: true }}>
               {partners.map((partner, index) => {
                 const Icon = partner.icon;
                 return (
-                  <div 
+                  <motion.div 
                     key={index}
-                    className="group relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl sm:rounded-3xl overflow-hidden hover:bg-white/15 hover:border-white/30 transition-all duration-300"
+                    variants={{ initial: { opacity: 0, y: 40 }, animate: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+                    whileHover={{ scale: 1.01, y: -4 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                    className="group relative bg-white/80 backdrop-blur-lg border border-slate-200/60 rounded-2xl sm:rounded-3xl overflow-hidden hover:bg-white/90 hover:border-slate-300 transition-all duration-300"
                   >
                     {/* Gradient Overlay */}
                     <div className={`absolute inset-0 ${partner.bgColor} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
@@ -148,35 +152,35 @@ export default function OurPartners() {
                             <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                           </div>
                           <div>
-                            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1">
+                            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-1">
                               {partner.acronym}
                             </h2>
                           </div>
                         </div>
                         
-                        <p className="text-sm sm:text-base lg:text-lg text-purple-200 font-semibold mb-3 sm:mb-4">
+                        <p className="text-sm sm:text-base lg:text-lg text-purple-700 font-semibold mb-3 sm:mb-4">
                           {partner.name}
                         </p>
                         
-                        <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+                        <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                           {partner.description}
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         <PublicFooter />
 
         {/* Background Elements */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-3/4 left-1/2 w-48 sm:w-64 h-48 sm:h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
+          <motion.div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/10 rounded-full blur-3xl" animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}></motion.div>
+          <motion.div className="absolute bottom-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-purple-500/10 rounded-full blur-3xl" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}></motion.div>
+          <motion.div className="absolute top-3/4 left-1/2 w-48 sm:w-64 h-48 sm:h-64 bg-pink-500/10 rounded-full blur-3xl" animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}></motion.div>
         </div>
       </div>
     </>

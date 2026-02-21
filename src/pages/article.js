@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -186,31 +187,31 @@ export default function ArticlePage() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="min-h-screen bg-gradient-to-br from-[#51d0de]/30 via-[#d9d9d9] to-[#bf4aa8]/30">
         <PublicHeader />
 
-        {/* White Content Container */}
-        <div className="bg-white">
+        {/* Content Container */}
+        <div className="relative z-10">
           {/* Hero Section */}
           <div className="relative pt-20 pb-16 px-4 sm:px-6">
             <div className="max-w-7xl mx-auto text-center">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+              <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-4xl sm:text-5xl md:text-6xl font-bold text-slate-900 mb-4">
                 Articles & Research
-              </h1>
-              <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              </motion.h1>
+              <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
                 Explore our comprehensive collection of published articles, research papers, reviews, and expert insights
-              </p>
+              </motion.p>
 
               {/* Search Bar */}
               <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-8">
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 w-5 h-5" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search articles by title, keywords, or content..."
-                    className="w-full pl-12 pr-4 py-4 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full pl-12 pr-4 py-4 rounded-lg bg-[#d9d9d9]/50 border border-slate-200/60 text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                   {searchQuery && (
                     <button
@@ -219,7 +220,7 @@ export default function ArticlePage() {
                         setSearchQuery('');
                         setCurrentPage(1);
                       }}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -230,7 +231,7 @@ export default function ArticlePage() {
               {/* Active Filters */}
               {hasActiveFilters && (
                 <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-                  <span className="text-gray-600 text-sm">Active filters:</span>
+                  <span className="text-slate-600 text-sm">Active filters:</span>
                   {selectedType && (
                     <button
                       onClick={() => handleTypeFilter(selectedType)}
@@ -277,15 +278,15 @@ export default function ArticlePage() {
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Sidebar Filters */}
               <aside className="lg:w-64 flex-shrink-0">
-                <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 sticky top-24">
+                <div className="bg-[#d9d9d9]/40 backdrop-blur-sm rounded-lg p-6 border border-slate-200/60 sticky top-24">
                   <div className="flex items-center gap-2 mb-6">
-                    <Filter className="w-5 h-5 text-gray-700" />
-                    <h2 className="text-gray-900 font-semibold text-lg">Filters</h2>
+                    <Filter className="w-5 h-5 text-slate-700" />
+                    <h2 className="text-slate-900 font-semibold text-lg">Filters</h2>
                   </div>
 
                   {/* Type Filter */}
                   <div className="mb-6">
-                    <h3 className="text-gray-700 text-sm font-medium mb-3">Article Type</h3>
+                    <h3 className="text-slate-700 text-sm font-medium mb-3">Article Type</h3>
                     <div className="space-y-2">
                       {Object.entries(articleTypeConfig).map(([type, config]) => {
                         const Icon = config.icon;
@@ -295,7 +296,7 @@ export default function ArticlePage() {
                             onClick={() => handleTypeFilter(type)}
                             className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${selectedType === type
                                 ? 'bg-purple-500 text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                                : 'bg-[#d9d9d9]/50 text-slate-700 hover:bg-[#d9d9d9]/70 border border-slate-200/60'
                               }`}
                           >
                             <Icon className="w-4 h-4" />
@@ -309,7 +310,7 @@ export default function ArticlePage() {
                   {/* Category Filter */}
                   {categories.length > 0 && (
                     <div>
-                      <h3 className="text-gray-700 text-sm font-medium mb-3">Category</h3>
+                      <h3 className="text-slate-700 text-sm font-medium mb-3">Category</h3>
                       <div className="space-y-2 max-h-64 overflow-y-auto">
                         {categories.map((category) => (
                           <button
@@ -317,7 +318,7 @@ export default function ArticlePage() {
                             onClick={() => handleCategoryFilter(category)}
                             className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${selectedCategory === category
                                 ? 'bg-purple-500 text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                                : 'bg-[#d9d9d9]/50 text-slate-700 hover:bg-[#d9d9d9]/70 border border-slate-200/60'
                               }`}
                           >
                             {category}
@@ -342,7 +343,7 @@ export default function ArticlePage() {
                 ) : publishedArticles && publishedArticles.length > 0 ? (
                   <>
                     <div className="mb-6 flex items-center justify-between">
-                      <p className="text-gray-600">
+                      <p className="text-slate-600">
                         {publishedPagination && publishedPagination.totalArticles > 0 ? (
                           <>
                             Showing {((publishedPagination.currentPage - 1) * 12) + 1} to{' '}
@@ -355,16 +356,16 @@ export default function ArticlePage() {
                       </p>
                     </div>
 
-                    <div className="space-y-4">
-                      {publishedArticles.map((article) => {
+                    <motion.div className="space-y-4" initial="initial" animate="animate" variants={{ initial: {}, animate: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } } }}>
+                      {publishedArticles.map((article, idx) => {
                         const typeConfig = articleTypeConfig[article.type] || articleTypeConfig['article'];
                         const TypeIcon = typeConfig.icon;
 
                         return (
+                          <motion.div key={article._id} variants={{ initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}>
                           <Link
-                            key={article._id}
                             href={`/article/${article.slug || article._id}`}
-                            className="group bg-white rounded-lg overflow-hidden border border-gray-200 hover:border-purple-500 hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row"
+                            className="group bg-[#d9d9d9]/50 backdrop-blur-sm rounded-lg overflow-hidden border border-slate-200/60 hover:border-purple-500 hover:shadow-lg transition-all duration-300 flex flex-col md:flex-row block"
                           >
                             {/* Article Image */}
                             {/* {article.featuredImage ? (
@@ -384,7 +385,7 @@ export default function ArticlePage() {
                               </div>
                             ) : (
                               <div className="relative w-full md:w-48 h-48 md:h-auto flex-shrink-0 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
-                                <TypeIcon className="w-16 h-16 text-gray-300" />
+                                <TypeIcon className="w-16 h-16 text-slate-400" />
                                 <div className="absolute top-4 left-4">
                                   <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${typeConfig.color}`}>
                                     <TypeIcon className="w-3 h-3" />
@@ -396,18 +397,18 @@ export default function ArticlePage() {
 
                             {/* Article Content */}
                             <div className="p-6 flex-1">
-                              <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors line-clamp-2">
+                              <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-purple-600 transition-colors line-clamp-2">
                                 {article.title}
                               </h3>
 
                               {article.abstract && (
-                                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                                <p className="text-slate-600 text-sm mb-4 line-clamp-2">
                                   {truncateText(article.abstract, 200)}
                                 </p>
                               )}
 
                               {/* Meta Information */}
-                              <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 mb-4">
+                              <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mb-4">
                                 {article.author && (
                                   <div className="flex items-center gap-1">
                                     <User className="w-3 h-3" />
@@ -434,7 +435,7 @@ export default function ArticlePage() {
                                   {article.tags.slice(0, 3).map((tag, index) => (
                                     <span
                                       key={index}
-                                      className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
+                                      className="inline-flex items-center gap-1 px-2 py-1 bg-[#d9d9d9]/60 text-slate-700 rounded text-xs"
                                     >
                                       <Tag className="w-3 h-3" />
                                       {tag}
@@ -444,22 +445,23 @@ export default function ArticlePage() {
                               )}
 
                               {/* Read More */}
-                              <div className="mt-auto pt-4 border-t border-gray-200">
+                              <div className="mt-auto pt-4 border-t border-slate-200/60">
                                 <span className="text-purple-600 text-sm font-medium group-hover:text-purple-700 transition-colors">
                                   Read More →
                                 </span>
                               </div>
                             </div>
                           </Link>
+                          </motion.div>
                         );
                       })}
-                    </div>
+                    </motion.div>
 
                     {/* Pagination */}
                     {publishedPagination && publishedPagination.totalPages > 1 && (
                       <div className="mt-8">
                         {/* Pagination Info */}
-                        <div className="mb-4 text-center text-sm text-gray-600">
+                        <div className="mb-4 text-center text-sm text-slate-600">
                           Showing page {publishedPagination.currentPage} of {publishedPagination.totalPages} 
                           {' '}({publishedPagination.totalArticles} total articles)
                         </div>
@@ -481,7 +483,7 @@ export default function ArticlePage() {
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
                             disabled={!publishedPagination.hasPrevPage}
-                            className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors text-sm font-medium"
+                            className="px-3 py-2 bg-[#d9d9d9]/50 border border-slate-200/60 rounded-lg text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#d9d9d9]/70 transition-colors text-sm font-medium"
                             title="First page"
                           >
                             First
@@ -502,7 +504,7 @@ export default function ArticlePage() {
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
                             disabled={!publishedPagination.hasPrevPage}
-                            className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
+                            className="px-3 py-2 bg-[#d9d9d9]/50 border border-slate-200/60 rounded-lg text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#d9d9d9]/70 transition-colors"
                             title="Previous page"
                           >
                             <ChevronLeft className="w-4 h-4" />
@@ -551,7 +553,7 @@ export default function ArticlePage() {
                               return pages.map((pageNum, index) => {
                                 if (pageNum === 'ellipsis') {
                                   return (
-                                    <span key={`ellipsis-${index}`} className="px-2 text-gray-500">
+                                    <span key={`ellipsis-${index}`} className="px-2 text-slate-500">
                                       ...
                                     </span>
                                   );
@@ -574,7 +576,7 @@ export default function ArticlePage() {
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors min-w-[40px] ${
                                       currentPage === pageNum
                                         ? 'bg-purple-500 text-white shadow-md'
-                                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-300'
+                                        : 'bg-[#d9d9d9]/50 text-slate-700 hover:bg-[#d9d9d9]/70 border border-slate-200/60'
                                     }`}
                                   >
                                     {pageNum}
@@ -599,7 +601,7 @@ export default function ArticlePage() {
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
                             disabled={!publishedPagination.hasNextPage}
-                            className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
+                            className="px-3 py-2 bg-[#d9d9d9]/50 border border-slate-200/60 rounded-lg text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#d9d9d9]/70 transition-colors"
                             title="Next page"
                           >
                             <ChevronRight className="w-4 h-4" />
@@ -620,7 +622,7 @@ export default function ArticlePage() {
                               window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
                             disabled={!publishedPagination.hasNextPage}
-                            className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors text-sm font-medium"
+                            className="px-3 py-2 bg-[#d9d9d9]/50 border border-slate-200/60 rounded-lg text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#d9d9d9]/70 transition-colors text-sm font-medium"
                             title="Last page"
                           >
                             Last
@@ -630,10 +632,10 @@ export default function ArticlePage() {
                     )}
                   </>
                 ) : (
-                  <div className="bg-gray-50 rounded-lg p-12 text-center border border-gray-200">
-                    <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">No articles found</h3>
-                    <p className="text-gray-600">
+                  <div className="bg-[#d9d9d9]/40 backdrop-blur-sm rounded-lg p-12 text-center border border-slate-200/60">
+                    <FileText className="w-16 h-16 text-slate-500 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-slate-900 mb-2">No articles found</h3>
+                    <p className="text-slate-600">
                       {hasActiveFilters
                         ? 'Try adjusting your filters or search query.'
                         : 'No published articles available at the moment.'}
@@ -654,6 +656,13 @@ export default function ArticlePage() {
         </div>
 
         <PublicFooter />
+
+        {/* Background Elements */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+          <motion.div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/10 rounded-full blur-3xl" animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} />
+          <motion.div className="absolute bottom-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-purple-500/10 rounded-full blur-3xl" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }} />
+          <motion.div className="absolute top-3/4 left-1/2 w-48 sm:w-64 h-48 sm:h-64 bg-indigo-500/10 rounded-full blur-3xl" animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }} />
+        </div>
       </div>
     </>
   );
